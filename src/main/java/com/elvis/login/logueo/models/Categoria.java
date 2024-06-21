@@ -31,7 +31,7 @@ public class Categoria {
     }
 
     public String getNombre() {
-        return getNombre();
+        return nombre;
     }
 
     public void setNombre(String nombre) {

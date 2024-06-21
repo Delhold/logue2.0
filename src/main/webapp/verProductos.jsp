@@ -1,71 +1,56 @@
 <%@ page import="com.elvis.login.logueo.models.Producto" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Optional" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%
+    List<Producto> productos = (List<Producto>) request.getAttribute("productos");
+    Optional<String> username = (Optional<String>) request.getAttribute("username");
+%>
+
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Listado de productos</title>
-    <!-- Agrega tus estilos CSS si los tienes -->
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<header>
-    <h1>Listado de productos</h1>
-    <nav>
-        <ul>
-            <li><a href="${request.getContextPath()}/textileria_war/jsp/administradora.jsp">Inicio</a></li>
-        </ul>
-    </nav>
-</header>
-
-<main>
-    <section>
-        <h2>Listado de productos</h2>
-        <%
-            String username = (String) request.getAttribute("username");
-            if (username != null) {
-        %>
-        <div style="color:blue;">HOLA <%= username %>, ¡Bienvenido!</div>
-        <%
-            }
-        %>
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Descripción</th>
-                <th>Precio</th>
-                <th>Agregar</th>
-            </tr>
-            </thead>
-            <tbody>
-            <%
-                List<Producto> productos = (List<Producto>) request.getAttribute("productos");
-                if (productos != null && !productos.isEmpty()) {
-                    for (Producto producto : productos) {
-            %>
-            <tr>
-                <td><%= producto.getIdProducto() %></td>
-                <td><%= producto.getNombre() %></td>
-                <td><%= producto.getCategoria().getNombre() %></td>
-                <td><%= producto.getDescripcion() %></td>
-                <td><%= producto.getPrecio() %></td>
-                <td><a href="<%= request.getContextPath() %>/agregar-carro?id=<%= producto.getIdProducto() %>">Agregar al carro</a></td>
-            </tr>
-            <%
-                    }
-                } else {
-                    out.println("<tr><td colspan='6'>No hay productos disponibles</td></tr>");
-                }
-            %>
-            </tbody>
-        </table>
-    </section>
-</main>
-
+<h2>Listado de productos</h2>
+<% if (username.isPresent()) { %>
+<div>Hola <%= username.get() %>, Bienvenido!</div>
+<p><a href="<%= request.getContextPath() %>/productos/form">Crear Nuevo Producto</a></p>
+<% } %>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Agregar</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for (Producto p : productos) { %>
+    <tr>
+        <td><%= p.getIdProducto() %></td>
+        <td><%= p.getNombre() %></td>
+        <td><%= p.getCategoria().getNombre() %></td>
+        <td><%= p.getDescripcion() %></td>
+        <td><%= p.getPrecio() %></td>
+        <% if (username.isPresent()) { %>
+        <td><a href="<%= request.getContextPath() %>/agregar-carro?id=<%= p.getIdProducto() %>">Agregar al carro</a></td>
+        <td><a href="<%= request.getContextPath() %>/editar-producto?id=<%= p.getIdProducto() %>">Editar</a></td>
+        <td><a onclick="return confirm('¿Estás seguro de que deseas eliminar el producto?');"
+               href="<%= request.getContextPath() %>/eliminar-producto?id=<%= p.getIdProducto() %>">Eliminar</a></td>
+        <% } %>
+    </tr>
+    <% } %>
+    </tbody>
+</table>
 <footer>
     <p>&copy; 2024 Textileria App. Todos los derechos reservados.</p>
 </footer>

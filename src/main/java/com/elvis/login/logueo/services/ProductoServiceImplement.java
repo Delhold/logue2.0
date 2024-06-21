@@ -1,5 +1,6 @@
 package com.elvis.login.logueo.services;
 
+import com.elvis.login.logueo.models.Categoria;
 import com.elvis.login.logueo.models.Producto;
 
 import java.util.Arrays;
@@ -17,7 +18,15 @@ public class ProductoServiceImplement implements ProductoService {
         return listar().stream().filter(p->p.getIdProducto().equals(id)).findAny();
     }
 
+    @Override
+    public void guardar(Producto producto) {
+
+    }
+
+    @Override
+    public void eliminar(Integer id) {
+
+    }
+
 
 }
-
-

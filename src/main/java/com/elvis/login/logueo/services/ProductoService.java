@@ -10,6 +10,11 @@ public interface ProductoService {
     //Implemntamos un método para obtener el producto por
     //id
     Optional<Producto> porId(Integer id);
+    //Implementamos un meotod para guardar
+    void guardar(Producto producto);
+    //Implementamos un mpetodo para eliminar
+    void eliminar(Integer id);
+
 
 
 }

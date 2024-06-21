@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-//creamos el Path para la conexión al Servlet
 @WebServlet({"/Login", "/ServletLogin"})
-
 public class ServletLogin extends HttpServlet {
     final static String USERNAME = "admin";
     final static String PASSWORD = "12345";
@@ -32,16 +30,18 @@ public class ServletLogin extends HttpServlet {
                 out.print("<head>");
                 out.print("<meta charset=\"UTF-8\">");
                 out.print("<title>Hola "+ usernameOptional.get() + "</title>");
+                // Agrega la referencia al archivo CSS
+                out.print("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + req.getContextPath() + "/css/styles.css\">");
                 out.print("</head>");
                 out.println("<body>");
-                out.print("<h1>Hola" + usernameOptional.get() + " has iniciado sesión con exito</h1>");
-                out.print("<p><a href='" + req.getContextPath() + "/index.html'>volver</a></p>");
-                out.print("<p><a href='" + req.getContextPath() + "/logout'>cerrar sesión</a><p>");
+                out.print("<h1>Hola" + usernameOptional.get() + " has iniciado sesión con éxito</h1>");
+                out.print("<p><a href='" + req.getContextPath() + "/index.html'>Volver</a></p>");
+                out.print("<p><a href='" + req.getContextPath() + "/logout'>Cerrar sesión</a><p>");
                 out.println("</body>");
                 out.print("</html>");
             }
-        }else{
-            getServletContext().getRequestDispatcher("/login.jsp").forward(req,resp);
+        } else {
+            getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }
 
@@ -53,14 +53,8 @@ public class ServletLogin extends HttpServlet {
             HttpSession session = req.getSession();
             session.setAttribute("username", username);
             resp.sendRedirect(req.getContextPath() + "/ServletLogin");
-        }else{
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Lo sentimos no esta autorizado para ingresar al sistema");
+        } else {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Lo sentimos no está autorizado para ingresar al sistema");
         }
     }
-
-
-
-
-
 }
-
